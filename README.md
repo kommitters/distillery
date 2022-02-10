@@ -19,6 +19,16 @@ independently of an Erlang/Elixir installation. No dependencies, no hassle.
 This is a pure-Elixir, dependency-free implementation of release generation for Elixir projects.
 It is currently a standalone package, but may be integrated into Mix at some point in the future.
 
+## Compatible versions
+
+Version `2.1.1` or lower:
+
+* Elixir ~> `1.8.x` or lower.
+
+Version `3.0.0` or higher:
+
+* Elixir ~> `1.9.x` or higher.
+
 ## Installation
 
 Distillery requires Elixir 1.6 or greater. It works with Erlang 20+.
