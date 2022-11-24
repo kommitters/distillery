@@ -4,7 +4,7 @@ defmodule Distillery.Releases.Assembler do
   struct. It creates the release directory, copies applications, and generates release-specific
   files required by `:systools` and `:release_handler`.
   """
-  alias Distillery.Releases.Config
+  alias Distillery.Releases.Config, as: ReleaseConfig
   alias Distillery.Releases.Release
   alias Distillery.Releases.Environment
   alias Distillery.Releases.Profile
@@ -19,8 +19,8 @@ defmodule Distillery.Releases.Assembler do
   Record.defrecordp(:file_info, Record.extract(:file_info, from_lib: "kernel/include/file.hrl"))
 
   @doc false
-  @spec pre_assemble(Config.t()) :: {:ok, Release.t()} | {:error, term}
-  def pre_assemble(%Config{} = config) do
+  @spec pre_assemble(ReleaseConfig.t()) :: {:ok, Release.t()} | {:error, term}
+  def pre_assemble(%ReleaseConfig{} = config) do
     with {:ok, environment} <- Release.select_environment(config),
          {:ok, release} <- Release.select_release(config),
          release <- apply_environment(release, environment),
@@ -33,7 +33,7 @@ defmodule Distillery.Releases.Assembler do
   end
 
   @doc """
-  This function takes a Config struct and assembles the release.
+  This function takes a ReleaseConfig struct and assembles the release.
 
   **Note: This operation has side-effects!** It creates files, directories,
   copies files from other filesystem locations. If failures occur, no cleanup
@@ -41,8 +41,8 @@ defmodule Distillery.Releases.Assembler do
   this function are scoped to the current project's `rel` directory, and cannot
   impact the filesystem outside of this directory.
   """
-  @spec assemble(Config.t()) :: {:ok, Release.t()} | {:error, term}
-  def assemble(%Config{} = config) do
+  @spec assemble(ReleaseConfig.t()) :: {:ok, Release.t()} | {:error, term}
+  def assemble(%ReleaseConfig{} = config) do
     with {:ok, release} <- pre_assemble(config),
          {:ok, release} <- generate_overlay_vars(release),
          {:ok, release} <- copy_applications(release),
@@ -220,7 +220,7 @@ defmodule Distillery.Releases.Assembler do
     end
   rescue
     e in [File.Error] ->
-      {:error, {:assembler, {e, System.stacktrace()}}}
+      {:error, {:assembler, {e, __STACKTRACE__}}}
   catch
     :error, {:assembler, _mod, _reason} = err ->
       {:error, err}
@@ -655,7 +655,7 @@ defmodule Distillery.Releases.Assembler do
                {:ok, tokens, _} <- :erl_scan.string(String.to_charlist(templated)),
                {:ok, sys_config} <- :erl_parse.parse_term(tokens),
                :ok <- validate_sys_config(sys_config),
-               merged <- Mix.Config.merge(base_config, sys_config) do
+               merged <- Config.Reader.merge(base_config, sys_config) do
             merged
           else
             err ->
@@ -992,6 +992,7 @@ defmodule Distillery.Releases.Assembler do
             "    this setting will prevent you from doing so without a rolling restart.\n" <>
             "    You may ignore this warning if you have no plans to use hot upgrades."
         )
+
         Shell.debug("Stripping release (#{path})")
 
         case :beam_lib.strip_release(String.to_charlist(path)) do

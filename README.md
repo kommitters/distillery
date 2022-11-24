@@ -3,9 +3,9 @@
 [![Master](https://travis-ci.org/bitwalker/distillery.svg?branch=master)](https://travis-ci.org/bitwalker/distillery)
 [![Hex.pm Version](http://img.shields.io/hexpm/v/distillery.svg?style=flat)](https://hex.pm/packages/distillery)
 
-  * [Documentation](https://hexdocs.pm/distillery)
-  * [CHANGELOG](https://hexdocs.pm/distillery/changelog.html)
-  * [Upgrading to 2.x](https://hexdocs.pm/distillery/upgrading_to_2_0.html)
+- [Documentation](https://hexdocs.pm/distillery)
+- [CHANGELOG](https://hexdocs.pm/distillery/changelog.html)
+- [Upgrading to 2.x](https://hexdocs.pm/distillery/upgrading_to_2_0.html)
 
 ## About
 
@@ -23,11 +23,15 @@ It is currently a standalone package, but may be integrated into Mix at some poi
 
 Version `2.1.1` or lower:
 
-* Elixir ~> `1.8.x` or lower.
+- Elixir ~> `1.8.x` or lower.
 
 Version `3.0.0` or higher:
 
-* Elixir ~> `1.9.x` or higher.
+- Elixir ~> `1.9.x`.
+
+Version `3.1.0` or higher:
+
+- Elixir ~> `1.14.x` or higher.
 
 ## Installation
 
