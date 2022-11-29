@@ -120,7 +120,7 @@ defmodule Mix.Tasks.Distillery.Release do
     e ->
       Shell.error(
         "Release failed: #{Exception.message(e)}\n" <>
-          Exception.format_stacktrace(System.stacktrace())
+          Exception.format_stacktrace(__STACKTRACE__)
       )
 
       System.halt(1)
@@ -153,7 +153,7 @@ defmodule Mix.Tasks.Distillery.Release do
     e ->
       Shell.error(
         "Release failed: #{Exception.message(e)}\n" <>
-          Exception.format_stacktrace(System.stacktrace())
+          Exception.format_stacktrace(__STACKTRACE__)
       )
 
       System.halt(1)
@@ -252,7 +252,7 @@ defmodule Mix.Tasks.Distillery.Release do
       is_upgrade: false,
       no_tar: false,
       upgrade_from: :latest,
-      erl_opts: nil,
+      erl_opts: nil
     }
 
     do_parse_args(flags, defaults)

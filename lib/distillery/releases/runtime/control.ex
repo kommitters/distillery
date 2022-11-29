@@ -262,7 +262,14 @@ defmodule Distillery.Releases.Runtime.Control do
         {hook_width, doc_width} = column_widths(hooks)
 
         for {hook, doc} <- hooks do
-          IO.write(["    ", IO.ANSI.green(), hook, IO.ANSI.reset(), String.duplicate(" ", max(hook_width - byte_size(hook) + 2, 2))])
+          IO.write([
+            "    ",
+            IO.ANSI.green(),
+            hook,
+            IO.ANSI.reset(),
+            String.duplicate(" ", max(hook_width - byte_size(hook) + 2, 2))
+          ])
+
           print_help_lines(doc, doc_width + 1)
         end
       else
@@ -707,14 +714,14 @@ defmodule Distillery.Releases.Runtime.Control do
       Console.error("""
       Could not load #{Path.expand(file)}: #{Exception.message(err)}
 
-      #{Exception.format_stacktrace(System.stacktrace())}
+      #{Exception.format_stacktrace(__STACKTRACE__)}
       """)
 
     err ->
       Console.error("""
       Evaluation failed with: #{Exception.message(err)}
 
-      #{Exception.format_stacktrace(System.stacktrace())}
+      #{Exception.format_stacktrace(__STACKTRACE__)}
       """)
   end
 
@@ -778,7 +785,7 @@ defmodule Distillery.Releases.Runtime.Control do
       Console.error("""
       Evaluation failed with: #{Exception.message(err)}
 
-      #{Exception.format_stacktrace(System.stacktrace())}
+      #{Exception.format_stacktrace(__STACKTRACE__)}
       """)
   end
 
@@ -792,7 +799,7 @@ defmodule Distillery.Releases.Runtime.Control do
             Console.error("""
             Evaluation failed with: #{Exception.message(err)}
 
-            #{Exception.format_stacktrace(System.stacktrace())}
+            #{Exception.format_stacktrace(__STACKTRACE__)}
             """)
         end
 
@@ -822,9 +829,7 @@ defmodule Distillery.Releases.Runtime.Control do
       nil ->
         # Not installed, so unpack tarball
         Console.info(
-          "Release #{release}:#{version} not found, attempting to unpack releases/#{version}/#{
-            release
-          }.tar.gz"
+          "Release #{release}:#{version} not found, attempting to unpack releases/#{version}/#{release}.tar.gz"
         )
 
         package = version |> Path.join(release) |> String.to_charlist()
@@ -866,9 +871,7 @@ defmodule Distillery.Releases.Runtime.Control do
       nil ->
         # Not installed, so unpack tarball
         Console.info(
-          "Release #{release}:#{version} not found, attempting to unpack releases/#{version}/#{
-            release
-          }.tar.gz"
+          "Release #{release}:#{version} not found, attempting to unpack releases/#{version}/#{release}.tar.gz"
         )
 
         package = Path.join(version, release)
@@ -919,12 +922,16 @@ defmodule Distillery.Releases.Runtime.Control do
       case name_components(name) do
         %{name: name, full: full_name, host: host, type: type} when not is_nil(suffix) ->
           {full_name, suffix_name_long(name, host, suffix), type}
+
         %{name: name, full: full_name, host: host, type: type} ->
           {full_name, suffix_name_long(name, host), type}
+
         %{name: name, full: full_name, type: type} when not is_nil(suffix) ->
           {full_name, suffix_name(name, suffix), type}
+
         %{name: name, full: full_name, type: type} ->
           {full_name, suffix_name(name), type}
+
         {:error, reason} ->
           Console.error("Invalid value for '--name': #{reason}")
       end
@@ -949,11 +956,14 @@ defmodule Distillery.Releases.Runtime.Control do
 
   defp name_components(name) when is_binary(name) do
     full_name = String.to_atom(name)
+
     case String.split(name, "@") do
       [sname] ->
         %{name: sname, full: full_name, type: :shortnames}
+
       [sname, host] ->
         %{name: sname, full: full_name, host: host, type: hostname_type(host)}
+
       _parts ->
         {:error, "invalid name `#{name}`: must of the form 'name', 'name@host', or 'name@fqdn'"}
     end
@@ -963,6 +973,7 @@ defmodule Distillery.Releases.Runtime.Control do
     case String.split(host, ".", parts: 2) do
       [^host] ->
         :shortnames
+
       _ ->
         :longnames
     end
