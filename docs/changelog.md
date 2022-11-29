@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file (at least to
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html)
 
+## [3.1.0]
+
+### Added
+
+- Changed `System.stacktrace()` for `__STACKTRACE__`.
+- Changed deprecated function `Mix.Config.merge/2` by `Config.Reader.merge/2`
+
 ## [3.0.0]
 
 ### Added
@@ -17,10 +24,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Breaking Changes
 
 - In order to be compatible with Elixir 1.9, Mix tasks have been renamed:
-    - `mix distillery.release`
-    - `mix distillery.release.clean`
-    - `mix distillery.init`
-    - `mix distillery.gen.appup`
+  - `mix distillery.release`
+  - `mix distillery.release.clean`
+  - `mix distillery.init`
+  - `mix distillery.gen.appup`
 - Additionally, all public APIs that used the `Mix.Releases` namespace are now
   under the `Distillery.Releases` namespace, notably this affects plugin modules,
   config providers, and `rel/config.exs` config files.
@@ -80,7 +87,6 @@ provide a good overview of what has been addressed.
 - Provide appup transforms - a plugin system for modifying appups
   programmatically during release builds.
 
-
 ### Fixed
 
 - A lot of bugs, too many to list here
@@ -124,8 +130,7 @@ provide a good overview of what has been addressed.
   than the script. This allows you to define multiple hooks for a given event. This config has been in place
   for a long time now, but this release finally removes the old options
 - The `exec_opts` option for setting executable options has been deprecated in
-  favor of just `executable`, which now expects a Keyword list of `[enabled:
-  boolean, transient: boolean]`, you can use `executable: true` to imply
+  favor of just `executable`, which now expects a Keyword list of `[enabled: boolean, transient: boolean]`, you can use `executable: true` to imply
   `enabled: true`, `transient` still defaults to false.
 
 ## [1.5] - 2017-08-15
@@ -158,7 +163,6 @@ explicit rather than implicit.
 - Fix handling of dumb terminals (#298)
 - Fix handling of consolidation path (#307)
 
-
 ## [1.4] - 2017-05-10
 
 ### Changed
@@ -166,7 +170,6 @@ explicit rather than implicit.
 - `command` now automatically stops after command finishes executing
 - `pre_configure` hook now runs prior to `command`
 - Improved signal handling to return correct exit status codes
-
 
 ### Fixed
 
@@ -210,9 +213,9 @@ explicit rather than implicit.
   See `mix help release` for more info.
 - Implement `reload_config` command for runtime reconfiguration
 - Implement `pre_configure` hook which is now used prior to any time the configuration
- will be evaluated to ensure tools like conform are able to do their work first. This
- is being used in order to facilitate `reload_config`, and potentially other commands like
- it in the future.
+  will be evaluated to ensure tools like conform are able to do their work first. This
+  is being used in order to facilitate `reload_config`, and potentially other commands like
+  it in the future.
 - Implement simple API for the Release object for use by other libraries.
 
 ### Changed
@@ -270,7 +273,7 @@ explicit rather than implicit.
 
 ## [1.0.0] - 2016-12-05
 
-*NOTE*: This release contains breaking changes!
+_NOTE_: This release contains breaking changes!
 
 ### Added
 
