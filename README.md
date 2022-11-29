@@ -25,7 +25,7 @@ Version `2.1.1` or lower:
 
 - Elixir ~> `1.8.x` or lower.
 
-Version `3.0.0` or higher:
+Version `3.0.0`:
 
 - Elixir ~> `1.9.x`.
 
